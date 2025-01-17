@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "dependencies": {
+    "net8.0": {
+      "Tavis.UriTemplates": {
+        "type": "Direct",
+        "requested": "[2.0.0, )",
+        "resolved": "2.0.0",
+        "contentHash": "GbetWNcPIaXvWtanHlBqlEp2KflFrsJf8RBNXmI8Yyeft9CSGxNrcsoKWEiEzyrn7gGVQ25ZC6ep9UfWPR0Otw=="
+      },
+      "Unfucked": {
+        "type": "Direct",
+        "requested": "[0.0.0-beta3, )",
+        "resolved": "0.0.0-beta3",
+        "contentHash": "yV5nP4hBAz0HpVcvVqx+kbuUDu/lMYkPbNo4Ym9SLff8Xb0mgs3oAgGMAbJ3EVbj+TAid7o/GYgzt5/yfuNG6A=="
+      },
+      "UnionTypes": {
+        "type": "Direct",
+        "requested": "[1.0.1, )",
+        "resolved": "1.0.1",
+        "contentHash": "Nf7oNa8/mFwOiJYKmWcI7hcNwbFiXpSCZ2/DsMVWQk/aucpJtTKNvt4EYuTeOZi4IAseaPw04uf4rQEG5B6+tA=="
+      }
+    },
+    "net8.0/win-x64": {}
+  }
+}
