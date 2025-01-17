@@ -16,6 +16,10 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <AdditionalFiles Include="ExceptionAdjustments.txt" />
+    </ItemGroup>
+
+    <ItemGroup>
         <PackageReference Include="Tavis.UriTemplates" Version="2.0.0" />
         <PackageReference Include="Unfucked" Version="0.0.0-beta3" />
         <PackageReference Include="UnionTypes" Version="1.0.1" />

@@ -9,13 +9,12 @@ ShieldLogo freshpingLogo = new(Resources.freshpingLogo);
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 builder.Services
-    // .Configure<Configuration>(builder.Configuration)
     .AddSingleton<FreshpingClient, FreshpingClientImpl>()
     .ConfigureHttpJsonOptions(options => {
         options.SerializerOptions.Converters.Add(new JsonStringEnumConverter(JsonNamingPolicy.KebabCaseLower));
         options.SerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
     })
-    .AddSingleton(_ => new HttpClient(new SocketsHttpHandler { PooledConnectionLifetime = TimeSpan.FromHours(1) }) { Timeout = TimeSpan.FromSeconds(30) });
+    .AddSingleton(_ => new HttpClient(new SocketsHttpHandler { PooledConnectionLifetime = TimeSpan.FromHours(1), MaxConnectionsPerServer = 16 }) { Timeout = TimeSpan.FromSeconds(30) });
 
 await using WebApplication webApp = builder.Build();
 
