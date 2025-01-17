@@ -108,7 +108,7 @@ https://img.shields.io/endpoint?url=https%3A%2F%2Fwest.aldaviva.com%2Ffreshbadge
         - **meaning:** period over which to calculate the Check's uptime percentage, ending at the current time
         - **validity:** in the range (0, 90 days]
         - **default:** 90 days
-        - **example:** `?period=P30D` (30 days)
+        - **example:** `?period=P30D` (30 days) ![30 days](https://img.shields.io/endpoint?url=https%3A%2F%2Fwest.aldaviva.com%2Ffreshbadge%2F304333%3Fperiod%3DP30D)
     - `precision`
         - **importance:** optional
         - **location:** query parameter
@@ -116,8 +116,8 @@ https://img.shields.io/endpoint?url=https%3A%2F%2Fwest.aldaviva.com%2Ffreshbadge
         - **meaning:** how many digits after the decimal point the uptime percentage should show
         - **validity:** in the range [0, 256)
         - **default:** 7 (for the fabled "9 nines," because 99.9999999% has 7 nines after the decimal point)
-        - **example:** `?precision=2` (2 digits after the decimal point: `99.99%`)
-    - `locale`
+        - **example:** `?precision=2` (2 digits after the decimal point: `99.99%`) ![2 digits](https://img.shields.io/endpoint?url=https%3A%2F%2Fwest.aldaviva.com%2Ffreshbadge%2F304333%3Fprecision%3D2)
+    - `locale` 
         - **importance:** optional
         - **location:** query parameter
         - **type:** string
@@ -125,5 +125,15 @@ https://img.shields.io/endpoint?url=https%3A%2F%2Fwest.aldaviva.com%2Ffreshbadge
         - **meaning:** locale to use when rendering the uptime label and percentage
         - **validity:** any language tag supported by [Windows](https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-lcid/a9eac961-e77d-41a6-90a5-ce1a8b0cdb9c) or [ICU](https://icu.unicode.org/) (on Unix); the "uptime" label is currently badly localized in `de`, `en`, `es`, and `fr`.
         - **default:** `en-US` (US English), or the server user's locale when self-hosted
-        - **example:** `?locale=de` (Germany format: `Uptime: 99,99 %`)
-- Response: JSON object that conforms to the [Shields.io JSON Endpoint schema](https://shields.io/badges/endpoint-badge#:~:text=Example%20Shields%20Response-,Schema,-Property)
+        - **example:** `?locale=fr` (France format: `99,99 %`) ![2 digits](https://img.shields.io/endpoint?url=https%3A%2F%2Fwest.aldaviva.com%2Ffreshbadge%2F304333%3Flocale%3Dfr)
+- Response body: JSON object that conforms to the [Shields.io JSON Endpoint schema](https://shields.io/badges/endpoint-badge#:~:text=Example%20Shields%20Response-,Schema,-Property)
+    ```json
+    {
+        "schemaVersion": 1,
+        "label": "uptime",
+        "message": "99.9132844%",
+        "color": "success",
+        "isError": false,
+        "logoSvg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 32 32\"><path fill=\"#fff\" d=\"M28 0H16C7.2 0 0 7.2 0 16s7.2 16 16 16 16-7.2 16-16V4c0-2.2-1.8-4-4-4zM16 7.7c4.4 0 8 3.5 8.3 7.8h-4l-2.4-3.1c-.2-.3-.6-.4-1-.4-.4.1-.7.3-.8.7l-1.8 5.1-1.3-1.9c-.2-.3-.5-.4-.8-.4H7.7c.2-4.4 3.9-7.8 8.3-7.8zm0 16.6c-4.1 0-7.5-2.9-8.2-6.8h3.9l2.3 3c.2.3.5.4.8.4h.2c.4-.1.7-.3.8-.7l1.8-5.1 1.5 2c.2.2.5.4.8.4h4.4c-.8 3.9-4.2 6.8-8.3 6.8z\"/></svg>"
+    }
+    ```
