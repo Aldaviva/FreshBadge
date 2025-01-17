@@ -13,6 +13,7 @@
         <Company>$(Authors)</Company>
         <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
         <NoWarn>$(NoWarn);CS8524</NoWarn>
+        <NeutralLanguage>en-US</NeutralLanguage>
     </PropertyGroup>
 
     <ItemGroup>
@@ -26,8 +27,8 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Compile Update="Resources.Designer.cs" DesignTime="True" AutoGen="True" DependentUpon="Resources.resx" />
-        <EmbeddedResource Update="Resources.resx" Generator="ResXFileCodeGenerator" LastGenOutput="Resources.Designer.cs" />
+        <Compile Update="Internationalization\Resources.Designer.cs" DesignTime="True" AutoGen="True" DependentUpon="Resources.resx" />
+        <EmbeddedResource Update="Internationalization\Resources.resx" Generator="ResXFileCodeGenerator" LastGenOutput="Resources.Designer.cs" />
     </ItemGroup>
 
 </Project>

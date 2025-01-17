@@ -45,9 +45,10 @@ public class ShieldsBadgeResponse {
             case { logoXml: { } xml }:
                 logoSvg = xml;
                 break;
-            case { simpleIconSlug: { } iconName, autoSizeSimpleIcon: var autoSize }:
+            case { simpleIconSlug: { } iconName }:
                 namedLogo = iconName;
-                logoSize  = autoSize ? "auto" : null;
+                logoSize  = logo.autoSizeSimpleIcon ? "auto" : null;
+                logoColor = logo.simpleIconColor;
                 break;
         }
     }
@@ -62,6 +63,7 @@ public class ShieldsBadgeResponse {
     public string? logoSvg { get; }
     public string? namedLogo { get; }
     public string? logoSize { get; }
+    public string? logoColor { get; }
     public ShieldStyle? style { get; }
 
 }

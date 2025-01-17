@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace FreshBadge {
+namespace FreshBadge.Internationalization {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace FreshBadge {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("FreshBadge.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("FreshBadge.Internationalization.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,11 +61,29 @@ namespace FreshBadge {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to error.
+        /// </summary>
+        internal static string error {
+            get {
+                return ResourceManager.GetString("error", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to &lt;svg xmlns=&quot;http://www.w3.org/2000/svg&quot; viewBox=&quot;0 0 32 32&quot;&gt;&lt;path fill=&quot;#fff&quot; d=&quot;M28 0H16C7.2 0 0 7.2 0 16s7.2 16 16 16 16-7.2 16-16V4c0-2.2-1.8-4-4-4zM16 7.7c4.4 0 8 3.5 8.3 7.8h-4l-2.4-3.1c-.2-.3-.6-.4-1-.4-.4.1-.7.3-.8.7l-1.8 5.1-1.3-1.9c-.2-.3-.5-.4-.8-.4H7.7c.2-4.4 3.9-7.8 8.3-7.8zm0 16.6c-4.1 0-7.5-2.9-8.2-6.8h3.9l2.3 3c.2.3.5.4.8.4h.2c.4-.1.7-.3.8-.7l1.8-5.1 1.5 2c.2.2.5.4.8.4h4.4c-.8 3.9-4.2 6.8-8.3 6.8z&quot;/&gt;&lt;/svg&gt;.
         /// </summary>
         internal static string freshpingLogo {
             get {
                 return ResourceManager.GetString("freshpingLogo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to uptime.
+        /// </summary>
+        internal static string uptime {
+            get {
+                return ResourceManager.GetString("uptime", resourceCulture);
             }
         }
     }

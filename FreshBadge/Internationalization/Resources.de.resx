@@ -117,7 +117,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="freshpingLogo" xml:space="preserve">
-    <value>&lt;svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"&gt;&lt;path fill="#fff" d="M28 0H16C7.2 0 0 7.2 0 16s7.2 16 16 16 16-7.2 16-16V4c0-2.2-1.8-4-4-4zM16 7.7c4.4 0 8 3.5 8.3 7.8h-4l-2.4-3.1c-.2-.3-.6-.4-1-.4-.4.1-.7.3-.8.7l-1.8 5.1-1.3-1.9c-.2-.3-.5-.4-.8-.4H7.7c.2-4.4 3.9-7.8 8.3-7.8zm0 16.6c-4.1 0-7.5-2.9-8.2-6.8h3.9l2.3 3c.2.3.5.4.8.4h.2c.4-.1.7-.3.8-.7l1.8-5.1 1.5 2c.2.2.5.4.8.4h4.4c-.8 3.9-4.2 6.8-8.3 6.8z"/&gt;&lt;/svg&gt;</value>
+  <data name="uptime" xml:space="preserve">
+    <value>Uptime</value>
   </data>
 </root>

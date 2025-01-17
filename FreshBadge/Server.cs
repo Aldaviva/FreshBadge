@@ -1,10 +1,13 @@
 ﻿using FreshBadge;
 using FreshBadge.Data.Shields;
+using FreshBadge.Internationalization;
 using Microsoft.AspNetCore.Mvc;
+using System.Globalization;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-ShieldLogo freshpingLogo = new(Resources.freshpingLogo);
+ShieldLogo  freshpingLogo  = new(Resources.freshpingLogo);
+CultureInfo defaultCulture = CultureInfo.CurrentCulture;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
@@ -18,13 +21,22 @@ builder.Services
 
 await using WebApplication webApp = builder.Build();
 
-webApp.MapGet("/{checkId:long}", async ([FromRoute] long checkId, [FromQuery] string? period, [FromServices] FreshpingClient client) => {
+webApp.MapGet("/{checkId:long}", async ([FromRoute] long checkId, [FromQuery] string? period, [FromQuery] byte? precision, [FromQuery] string? locale, [FromServices] FreshpingClient client) => {
     try {
         TimeSpan    reportPeriod = TimeSpan.TryParse(period, out TimeSpan p) ? p : TimeSpan.FromDays(90);
         CheckStatus status       = await client.fetchCheckStatus(checkId, reportPeriod);
-        return new ShieldsBadgeResponse("uptime", status.uptime.ToString("P7"), messageColor: status.isUp ? ShieldColor.SUCCESS : ShieldColor.CRITICAL, isError: !status.isUp, logo: freshpingLogo);
+        precision ??= 7;
+
+        try {
+            CultureInfo.CurrentCulture = CultureInfo.CurrentUICulture = locale != null ? CultureInfo.GetCultureInfo(locale) : defaultCulture;
+        } catch (CultureNotFoundException) {
+            CultureInfo.CurrentCulture = CultureInfo.CurrentUICulture = defaultCulture;
+        }
+
+        string message = Math.Round(status.uptime, (int) precision + 2, MidpointRounding.ToNegativeInfinity).ToString("P" + precision);
+        return new ShieldsBadgeResponse(Resources.uptime, message, messageColor: status.isUp ? ShieldColor.SUCCESS : ShieldColor.CRITICAL, isError: !status.isUp, logo: freshpingLogo);
     } catch (FreshBadgeException e) {
-        return new ShieldsBadgeResponse("error", e.Message, messageColor: ShieldColor.CRITICAL, isError: true, logo: freshpingLogo);
+        return new ShieldsBadgeResponse(Resources.error, e.Message, messageColor: ShieldColor.CRITICAL, isError: true, logo: freshpingLogo);
     }
 });
 
