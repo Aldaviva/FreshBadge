@@ -33,7 +33,7 @@ This is a free alternative to the [official Freshping badges](https://support.fr
 ### Self-hosted FreshBadge server (optional)
 If you want to use my hosted FreshBadge server instance, skip to the [Shields.io](#shieldsio) steps. Otherwise, you can run a FreshBadge server yourself.
 
-1. Download the [latest release](https://github.com/Aldaviva/FreshPager/releases/latest).
+1. Download the [latest release](https://github.com/Aldaviva/FreshBadge/releases/latest) for your operating system and CPU.
 1. Extract the ZIP file to a directory on your computer.
 
 #### IIS
