@@ -21,6 +21,10 @@
         "contentHash": "Nf7oNa8/mFwOiJYKmWcI7hcNwbFiXpSCZ2/DsMVWQk/aucpJtTKNvt4EYuTeOZi4IAseaPw04uf4rQEG5B6+tA=="
       }
     },
+    "net8.0/linux-arm": {},
+    "net8.0/linux-arm64": {},
+    "net8.0/linux-x64": {},
+    "net8.0/win-arm64": {},
     "net8.0/win-x64": {}
   }
 }
