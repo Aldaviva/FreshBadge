@@ -73,6 +73,7 @@ for example
 https://img.shields.io/endpoint?url=https%3A%2F%2Fwest.aldaviva.com%2Ffreshbadge%2F304333
 ```
 
+- The Badge background color is green when the check is up and red when the check is down.
 - You can customize the Badge appearance using the [Endpoint Badge query parameters](https://shields.io/badges/endpoint-badge#:~:text=the%20query%20string.-,Query%20Parameters,-url%20string%20%E2%80%94).
     ```url
     https://img.shields.io/endpoint?url=https%3A%2F%2Fwest.aldaviva.com%2Ffreshbadge%2F304333&label=uptime+(90+days)
@@ -92,46 +93,46 @@ https://img.shields.io/endpoint?url=https%3A%2F%2Fwest.aldaviva.com%2Ffreshbadge
 
 ## API
 
-- URL template: `https://west.aldaviva.com/freshbadge/{checkId}?period={period}`
+- URL template: `https://west.aldaviva.com/freshbadge/{checkId}{?period,precision,locale}`
 - Verb: `GET`
 - Parameters
     - `checkId`
         - **importance:** required
-        - **location:** path parameter
+        - **location:** path
         - **type:** number (64-bit signed integer)
-        - **meaning:** numeric ID of the Freshping Check to show uptime for, as seen in the `check_id` query parameter of the Freshping report page for this Check
+        - **meaning:** numeric ID of the Freshping Check to show uptime for, as seen in the `check_id` query parameter of the Freshping report page for this Check (`/reports?check_id={checkId}`)
     - `period`
         - **importance:** optional
-        - **location:** query parameter
+        - **location:** query
         - **type:** string
         - **format:** [ISO 8601 time period](https://en.wikipedia.org/wiki/ISO_8601#Durations)
         - **meaning:** period over which to calculate the Check's uptime percentage, ending at the current time
-        - **validity:** in the range (0, 90 days]
+        - **range:** [1 minute, 90 days]
         - **default:** 90 days
         - **example:** `?period=P30D` (30 days) ![30 days](https://img.shields.io/endpoint?url=https%3A%2F%2Fwest.aldaviva.com%2Ffreshbadge%2F304333%3Fperiod%3DP30D)
     - `precision`
         - **importance:** optional
-        - **location:** query parameter
+        - **location:** query
         - **type:** number (8-bit unsigned integer)
         - **meaning:** how many digits after the decimal point the uptime percentage should show
-        - **validity:** in the range [0, 256)
-        - **default:** 7 (for the fabled "9 nines," because 99.9999999% has 7 nines after the decimal point)
-        - **example:** `?precision=2` (2 digits after the decimal point: `99.99%`) ![2 digits](https://img.shields.io/endpoint?url=https%3A%2F%2Fwest.aldaviva.com%2Ffreshbadge%2F304333%3Fprecision%3D2)
+        - **range:** [0, 256)
+        - **default:** 4 (the finest Freshping check granularity is 1 minute, and the longest data retention is 90 days, which means 4 digits after the decimal point will always be precise enough to express even the shortest outage)
+        - **example:** `?precision=2` (2 digits after the decimal point) ![2 digits](https://img.shields.io/endpoint?url=https%3A%2F%2Fwest.aldaviva.com%2Ffreshbadge%2F304333%3Fprecision%3D2)
     - `locale` 
         - **importance:** optional
-        - **location:** query parameter
+        - **location:** query
         - **type:** string
         - **format:** [IETF BCP 47 language tag](https://en.wikipedia.org/wiki/IETF_language_tag)
         - **meaning:** locale to use when rendering the uptime label and percentage
-        - **validity:** any language tag supported by [Windows](https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-lcid/a9eac961-e77d-41a6-90a5-ce1a8b0cdb9c) or [ICU](https://icu.unicode.org/) (on Unix); the "uptime" label is currently badly localized in `de`, `en`, `es`, and `fr`.
+        - **range:** any language tag supported by [Windows](https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-lcid/a9eac961-e77d-41a6-90a5-ce1a8b0cdb9c) or [ICU](https://icu.unicode.org/) (on Unix); the "uptime" label is currently badly localized in `de`, `es`, `fr`, and `it`.
         - **default:** `en-US` (US English), or the server user's locale when self-hosted
-        - **example:** `?locale=fr` (France format: `99,99 %`) ![2 digits](https://img.shields.io/endpoint?url=https%3A%2F%2Fwest.aldaviva.com%2Ffreshbadge%2F304333%3Flocale%3Dfr)
+        - **example:** `?locale=fr` (France format) ![French](https://img.shields.io/endpoint?url=https%3A%2F%2Fwest.aldaviva.com%2Ffreshbadge%2F304333%3Flocale%3Dfr)
 - Response body: JSON object that conforms to the [Shields.io JSON Endpoint schema](https://shields.io/badges/endpoint-badge#:~:text=Example%20Shields%20Response-,Schema,-Property)
     ```json
     {
         "schemaVersion": 1,
         "label": "uptime",
-        "message": "99.9132844%",
+        "message": "99.9133%",
         "color": "success",
         "isError": false,
         "logoSvg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 32 32\"><path fill=\"#fff\" d=\"M28 0H16C7.2 0 0 7.2 0 16s7.2 16 16 16 16-7.2 16-16V4c0-2.2-1.8-4-4-4zM16 7.7c4.4 0 8 3.5 8.3 7.8h-4l-2.4-3.1c-.2-.3-.6-.4-1-.4-.4.1-.7.3-.8.7l-1.8 5.1-1.3-1.9c-.2-.3-.5-.4-.8-.4H7.7c.2-4.4 3.9-7.8 8.3-7.8zm0 16.6c-4.1 0-7.5-2.9-8.2-6.8h3.9l2.3 3c.2.3.5.4.8.4h.2c.4-.1.7-.3.8-.7l1.8-5.1 1.5 2c.2.2.5.4.8.4h4.4c-.8 3.9-4.2 6.8-8.3 6.8z\"/></svg>"

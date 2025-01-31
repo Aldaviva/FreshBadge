@@ -1,4 +1,5 @@
 ﻿using FreshBadge.Data;
+using NodaTime;
 using System.Net;
 using System.Text.Json;
 using Tavis.UriTemplates;
@@ -8,7 +9,7 @@ namespace FreshBadge;
 public interface FreshpingClient {
 
     /// <exception cref="FreshBadgeException">the request to Freshping failed</exception>
-    public Task<CheckStatus> fetchCheckStatus(long checkId, TimeSpan period);
+    public Task<CheckStatus> fetchCheckStatus(long checkId, Duration duration);
 
 }
 
@@ -21,12 +22,12 @@ public class FreshpingClientImpl(HttpClient http): FreshpingClient {
     private static UriTemplate checkUptimeUrl => new("https://api.freshping.io/v1/public-check-stats-reports/{check_id}/{?start_time,end_time}");
 
     /// <inheritdoc />
-    public async Task<CheckStatus> fetchCheckStatus(long checkId, TimeSpan period) {
+    public async Task<CheckStatus> fetchCheckStatus(long checkId, Duration duration) {
         try {
-            DateTime now = DateTime.UtcNow;
+            Instant now = SystemClock.Instance.GetCurrentInstant();
 
-            Task<PublicCheckStatusReport> stateTask  = fetchCheckStatusReport(checkId, TimeSpan.FromSeconds(1), now);
-            Task<PublicCheckStatusReport> uptimeTask = fetchCheckStatusReport(checkId, period, now);
+            Task<PublicCheckStatusReport> stateTask  = fetchCheckStatusReport(checkId, Duration.FromSeconds(1), now);
+            Task<PublicCheckStatusReport> uptimeTask = fetchCheckStatusReport(checkId, duration, now);
 
             PublicCheckStatusReport state  = await stateTask;
             PublicCheckStatusReport uptime = await uptimeTask;
@@ -43,14 +44,14 @@ public class FreshpingClientImpl(HttpClient http): FreshpingClient {
 
     /// <exception cref="FreshBadgeException"></exception>
     /// <exception cref="HttpRequestException"></exception>
-    private async Task<PublicCheckStatusReport> fetchCheckStatusReport(long checkId, TimeSpan period, DateTime utcNow = default) {
+    private async Task<PublicCheckStatusReport> fetchCheckStatusReport(long checkId, Duration duration, Instant now = default) {
         try {
-            utcNow = utcNow == default ? DateTime.UtcNow : utcNow;
+            now = now == default ? SystemClock.Instance.GetCurrentInstant() : now;
 
             return (await http.GetFromJsonAsync<PublicCheckStatusReport>(checkUptimeUrl.AddParameters(new {
                 check_id   = checkId,
-                start_time = utcNow.Subtract(period).ToString("O"),
-                end_time   = utcNow.ToString("O")
+                start_time = (now - duration).ToString(),
+                end_time   = now.ToString()
             }).Resolve(), JSON_OPTIONS))!;
         } catch (HttpRequestException e) when (e.StatusCode == HttpStatusCode.NotFound) {
             throw new FreshBadgeException("Check must be added to a Freshping Status Page");
