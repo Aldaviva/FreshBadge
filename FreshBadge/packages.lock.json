@@ -8,18 +8,6 @@
         "resolved": "3.2.1",
         "contentHash": "D1aHhUfPQUxU2nfDCVuSLahpp0xCYZTmj/KNH3mSK/tStJYcx9HO9aJ0qbOP3hzjGPV/DXOqY2AHe27Nt4xs4g=="
       },
-      "Tavis.UriTemplates": {
-        "type": "Direct",
-        "requested": "[2.0.0, )",
-        "resolved": "2.0.0",
-        "contentHash": "GbetWNcPIaXvWtanHlBqlEp2KflFrsJf8RBNXmI8Yyeft9CSGxNrcsoKWEiEzyrn7gGVQ25ZC6ep9UfWPR0Otw=="
-      },
-      "Unfucked": {
-        "type": "Direct",
-        "requested": "[0.0.0-beta4, )",
-        "resolved": "0.0.0-beta4",
-        "contentHash": "pWwHZP9Ok/LAZqFSrZ9CNddcWhx92wFxDh8oUgSrsNZjv/lFbM3HPSdcmLeqj4hhv1eir5a/DcQk+5XPSHzyvQ=="
-      },
       "UnionTypes": {
         "type": "Direct",
         "requested": "[1.1.0, )",

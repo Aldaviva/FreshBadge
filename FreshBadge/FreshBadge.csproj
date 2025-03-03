@@ -8,7 +8,7 @@
         <Nullable>enable</Nullable>
         <RollForward>latestMajor</RollForward>
         <LangVersion>latest</LangVersion>
-        <Version>1.0.1</Version>
+        <Version>1.1.0</Version>
         <Authors>Ben Hutchison</Authors>
         <Copyright>© 2025 $(Authors)</Copyright>
         <Company>$(Authors)</Company>
@@ -19,13 +19,21 @@
 
     <ItemGroup>
         <AdditionalFiles Include="ExceptionAdjustments.txt" />
+        <None Include="..\Readme.md" />
     </ItemGroup>
 
     <ItemGroup>
         <PackageReference Include="NodaTime" Version="3.2.1" />
-        <PackageReference Include="Tavis.UriTemplates" Version="2.0.0" />
-        <PackageReference Include="Unfucked" Version="0.0.0-beta4" />
         <PackageReference Include="UnionTypes" Version="1.1.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <Reference Include="Unfucked">
+            <HintPath>..\..\Unfucked\Unfucked\bin\Debug\net8.0\Unfucked.dll</HintPath>
+        </Reference>
+        <Reference Include="Unfucked.HTTP">
+            <HintPath>..\..\Unfucked\HTTP\bin\Debug\net8.0\Unfucked.HTTP.dll</HintPath>
+        </Reference>
     </ItemGroup>
 
     <ItemGroup>

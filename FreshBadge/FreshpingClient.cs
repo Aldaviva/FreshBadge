@@ -1,8 +1,8 @@
 ﻿using FreshBadge.Data;
 using NodaTime;
 using System.Net;
-using System.Text.Json;
-using Tavis.UriTemplates;
+using Unfucked;
+using Unfucked.HTTP;
 
 namespace FreshBadge;
 
@@ -15,11 +15,9 @@ public interface FreshpingClient {
 
 public record CheckStatus(bool isUp, double uptime);
 
-public class FreshpingClientImpl(HttpClient http): FreshpingClient {
+public class FreshpingClientImpl(HttpClient httpClient): FreshpingClient {
 
-    private static readonly JsonSerializerOptions JSON_OPTIONS = new(JsonSerializerDefaults.Web) { PropertyNamingPolicy = JsonNamingPolicy.SnakeCaseLower };
-
-    private static UriTemplate checkUptimeUrl => new("https://api.freshping.io/v1/public-check-stats-reports/{check_id}/{?start_time,end_time}");
+    private static readonly UrlBuilder CHECK_UPTIME_URL = UrlBuilder.FromTemplate("https://api.freshping.io/v1/public-check-stats-reports/{check_id}/{?start_time,end_time}");
 
     /// <inheritdoc />
     public async Task<CheckStatus> fetchCheckStatus(long checkId, Duration duration) {
@@ -48,11 +46,12 @@ public class FreshpingClientImpl(HttpClient http): FreshpingClient {
         try {
             now = now == default ? SystemClock.Instance.GetCurrentInstant() : now;
 
-            return (await http.GetFromJsonAsync<PublicCheckStatusReport>(checkUptimeUrl.AddParameters(new {
-                check_id   = checkId,
-                start_time = (now - duration).ToString(),
-                end_time   = now.ToString()
-            }).Resolve(), JSON_OPTIONS))!;
+            return await httpClient.Target(CHECK_UPTIME_URL)
+                .ResolveTemplate(new {
+                    check_id   = checkId,
+                    start_time = now - duration,
+                    end_time   = now
+                }).Get<PublicCheckStatusReport>();
         } catch (HttpRequestException e) when (e.StatusCode == HttpStatusCode.NotFound) {
             throw new FreshBadgeException("Check must be added to a Freshping Status Page");
         }

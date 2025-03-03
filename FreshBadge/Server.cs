@@ -7,6 +7,8 @@ using NodaTime.Text;
 using System.Globalization;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Unfucked.HTTP;
+using Unfucked.HTTP.Config;
 
 ShieldLogo  freshpingLogo   = new(Resources.freshpingLogo);
 CultureInfo defaultCulture  = CultureInfo.CurrentCulture;
@@ -22,7 +24,9 @@ builder.Services
         options.SerializerOptions.Converters.Add(new JsonStringEnumConverter(JsonNamingPolicy.KebabCaseLower));
         options.SerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
     })
-    .AddSingleton(_ => new HttpClient(new SocketsHttpHandler { PooledConnectionLifetime = TimeSpan.FromHours(1), MaxConnectionsPerServer = 16 }) { Timeout = TimeSpan.FromSeconds(30) });
+    .AddSingleton(_ => new HttpClient(new UnfuckedHttpHandler(new SocketsHttpHandler { PooledConnectionLifetime = TimeSpan.FromHours(1), MaxConnectionsPerServer = 16 }))
+            { Timeout = TimeSpan.FromSeconds(30) }
+        .Property(PropertyKey.JsonSerializerOptions, new JsonSerializerOptions(JsonSerializerDefaults.Web) { PropertyNamingPolicy = JsonNamingPolicy.SnakeCaseLower }));
 
 await using WebApplication webApp = builder.Build();
 
@@ -32,12 +36,11 @@ webApp.MapGet("/{checkId:long}", async ([FromRoute] long checkId,
                                         [FromQuery] string? locale,
                                         [FromServices] FreshpingClient client) => {
     try {
-        Duration reportDuration = period is not null && PeriodPattern.NormalizingIso.Parse(period) is { Success: true, Value: var p } && p.ToDuration() is var d ?
-            d < minimumDuration ? minimumDuration :
-            d > maximumDuration ? maximumDuration :
-            d :
-            defaultDuration;
-        precision ??= 4; // 60/7776000*100 = 0.0007716 (all increments affect 4 digits after the decimal point)
+        precision ??= 4; // 1/90/24/60*100 = 0.0007716 (all increments affect 4 digits after the decimal point)
+        Duration reportDuration = period is not null && PeriodPattern.NormalizingIso.Parse(period) is { Success: true, Value: var p } && p.ToDuration() is var d
+            ? d < minimumDuration ? minimumDuration
+            : d > maximumDuration ? maximumDuration : d
+            : defaultDuration;
 
         CheckStatus status = await client.fetchCheckStatus(checkId, reportDuration);
 
@@ -50,7 +53,16 @@ webApp.MapGet("/{checkId:long}", async ([FromRoute] long checkId,
         return new ShieldsBadgeResponse(
             label: Resources.uptime,
             message: Math.Round(status.uptime, (int) precision + 2, MidpointRounding.ToNegativeInfinity).ToString("P" + precision),
-            messageColor: status.isUp ? ShieldColor.SUCCESS : ShieldColor.CRITICAL,
+            messageColor: status switch {
+                { isUp: false }      => ShieldColor.CRITICAL,
+                { uptime: >= 0.995 } => ShieldColor.BRIGHT_GREEN,
+                { uptime: >= 0.990 } => ShieldColor.GREEN,
+                { uptime: >= 0.980 } => ShieldColor.YELLOW_GREEN,
+                { uptime: >= 0.975 } => ShieldColor.YELLOW,
+                { uptime: >= 0.950 } => ShieldColor.ORANGE,
+                { uptime: >= 0.910 } => ShieldColor.IMPORTANT,
+                _                    => ShieldColor.CRITICAL
+            },
             isError: !status.isUp,
             logo: freshpingLogo);
     } catch (FreshBadgeException e) {

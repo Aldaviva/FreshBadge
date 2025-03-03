@@ -41,11 +41,11 @@ If you want to use my hosted FreshBadge server instance, skip to the [Shields.io
 1. Ensure the [ASP.NET Core Hosting Bundle 8 or later](https://learn.microsoft.com/en-us/aspnet/core/host-and-deploy/iis/hosting-bundle) is installed.
 1. Log in to your server using IIS Manager.
 1. In Application Pools, create a new Application Pool (CLR 4).
-    - Don't use `DefaultAppPool` or any other non-empty pools, because ASP.NET Core webapps must each run isolated in their own pools.
+    - Don't use `DefaultAppPool` or any other non-empty pools, because ASP.NET Core webapps must each run isolated in their own pool.
 1. In your Site, add a new Application (View Applications › Add Application).
-    - The Alias is the URL path prefix (context root) of the app, such as `freshbadge`.
+    - The Alias is the URL path prefix (context root) of the app that should appear in the base URL, such as `freshbadge`.
     - Choose the Application Pool you created above.
-    - Set the Physical Path to the directory you extracted the FreshBadge release into.
+    - Set the Physical Path to the directory you extracted the FreshBadge release into, which contains `FreshBadge.dll`.
 
 #### Kestrel
 1. [Configure](https://learn.microsoft.com/en-us/aspnet/core/fundamentals/servers/kestrel/endpoints) listening ports, TLS certificates, and other settings in `appsettings.json`.
@@ -61,7 +61,7 @@ where `{checkId}` is the ID of the Freshping Check you want to monitor, for exam
 https://west.aldaviva.com/freshbadge/304333
 ```
 
-- For self-hosted FreshBadge instances, replace the origin and path prefix (`https://west.aldaviva.com/freshbadge/`) with your own server's base URL.
+- For self-hosted FreshBadge instances, replace the base URL `https://west.aldaviva.com/freshbadge/` with your own server's base URL.
 - See the [API documentation](#api) for additional parameters that can customize the Badge.
 
 #### Badge SVG URL
@@ -73,10 +73,11 @@ for example
 https://img.shields.io/endpoint?url=https%3A%2F%2Fwest.aldaviva.com%2Ffreshbadge%2F304333
 ```
 
-- The Badge background color is green when the check is up and red when the check is down.
-- You can customize the Badge appearance using the [Endpoint Badge query parameters](https://shields.io/badges/endpoint-badge#:~:text=the%20query%20string.-,Query%20Parameters,-url%20string%20%E2%80%94).
+- Like all URI path segments, the `{badgeJson}` parameter value must be [URI-encoded](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/encodeURIComponent).
+- The right side of the Badge's background color is green when the uptime is at least 99.5%, transitioning to orange as the uptime decreases in the Fibonacchi sequence to 91%. When the uptime is lower or the check is down, the background color is red.
+- You can customize the Badge appearance using the [Endpoint Badge query parameters](https://shields.io/badges/endpoint-badge#:~:text=the%20query%20string.-,Query%20Parameters,-url%20string%20%E2%80%94):
     ```url
-    https://img.shields.io/endpoint?url=https%3A%2F%2Fwest.aldaviva.com%2Ffreshbadge%2F304333&label=uptime+(90+days)
+    https://img.shields.io/endpoint?url=https%3A%2F%2Fwest.aldaviva.com%2Ffreshbadge%2F304333&label=uptime+(90+days)&color=informational
     ```
 
 #### SVG image in Markdown
@@ -124,7 +125,7 @@ https://img.shields.io/endpoint?url=https%3A%2F%2Fwest.aldaviva.com%2Ffreshbadge
         - **type:** string
         - **format:** [IETF BCP 47 language tag](https://en.wikipedia.org/wiki/IETF_language_tag)
         - **meaning:** locale to use when rendering the uptime label and percentage
-        - **range:** any language tag supported by [Windows](https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-lcid/a9eac961-e77d-41a6-90a5-ce1a8b0cdb9c) or [ICU](https://icu.unicode.org/) (on Unix); the "uptime" label is currently badly localized in `de`, `es`, `fr`, and `it`.
+        - **range:** any language tag supported by [Windows](https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-lcid/a9eac961-e77d-41a6-90a5-ce1a8b0cdb9c) or [ICU](https://icu.unicode.org/) (on *nix); the "uptime" label is currently badly localized in `de`, `es`, `fr`, and `it`.
         - **default:** `en-US` (US English), or the server user's locale when self-hosted
         - **example:** `?locale=fr` (France format) ![French](https://img.shields.io/endpoint?url=https%3A%2F%2Fwest.aldaviva.com%2Ffreshbadge%2F304333%3Flocale%3Dfr)
 - Response body: JSON object that conforms to the [Shields.io JSON Endpoint schema](https://shields.io/badges/endpoint-badge#:~:text=Example%20Shields%20Response-,Schema,-Property)
@@ -133,7 +134,7 @@ https://img.shields.io/endpoint?url=https%3A%2F%2Fwest.aldaviva.com%2Ffreshbadge
         "schemaVersion": 1,
         "label": "uptime",
         "message": "99.9133%",
-        "color": "success",
+        "color": "brightgreen",
         "isError": false,
         "logoSvg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 32 32\"><path fill=\"#fff\" d=\"M28 0H16C7.2 0 0 7.2 0 16s7.2 16 16 16 16-7.2 16-16V4c0-2.2-1.8-4-4-4zM16 7.7c4.4 0 8 3.5 8.3 7.8h-4l-2.4-3.1c-.2-.3-.6-.4-1-.4-.4.1-.7.3-.8.7l-1.8 5.1-1.3-1.9c-.2-.3-.5-.4-.8-.4H7.7c.2-4.4 3.9-7.8 8.3-7.8zm0 16.6c-4.1 0-7.5-2.9-8.2-6.8h3.9l2.3 3c.2.3.5.4.8.4h.2c.4-.1.7-.3.8-.7l1.8-5.1 1.5 2c.2.2.5.4.8.4h4.4c-.8 3.9-4.2 6.8-8.3 6.8z\"/></svg>"
     }
