@@ -1,7 +1,7 @@
 FreshBadge
 ===
 
-[![Uptime for the past 90 days](https://img.shields.io/endpoint?url=https%3A%2F%2Fwest.aldaviva.com%2Ffreshbadge%2F304333)](https://statuspage.freshping.io/61473-Aldaviva)
+[![Uptime for the past 90 days](https://img.shields.io/endpoint?url=https%3A%2F%2Fwest.aldaviva.com%2Ffreshbadge%2F304333)](https://statuspage.freshping.io/61473-Aldaviva/check/304333?timefilter=2160)
 
 Create a [Shields.io](https://shields.io) Badge for a [Freshping](https://freshping.io/) uptime Check, like the one above.
 
@@ -90,7 +90,7 @@ https://img.shields.io/endpoint?url=https%3A%2F%2Fwest.aldaviva.com%2Ffreshbadge
 ```markdown
 [![Uptime for the past 90 days](https://img.shields.io/endpoint?url=https%3A%2F%2Fwest.aldaviva.com%2Ffreshbadge%2F304333)](https://statuspage.freshping.io/61473-Aldaviva)
 ```
-[![Uptime for the past 90 days](https://img.shields.io/endpoint?url=https%3A%2F%2Fwest.aldaviva.com%2Ffreshbadge%2F304333)](https://statuspage.freshping.io/61473-Aldaviva)
+[![Uptime for the past 90 days](https://img.shields.io/endpoint?url=https%3A%2F%2Fwest.aldaviva.com%2Ffreshbadge%2F304333)](https://statuspage.freshping.io/61473-Aldaviva/check/304333?timefilter=2160)
 
 ## API
 
