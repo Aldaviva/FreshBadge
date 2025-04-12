@@ -23,17 +23,9 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="NodaTime" Version="3.2.1" />
+        <PackageReference Include="NodaTime" Version="3.2.2" />
+        <PackageReference Include="Unfucked.HTTP" Version="0.0.0-beta10" />
         <PackageReference Include="UnionTypes" Version="1.1.0" />
-    </ItemGroup>
-
-    <ItemGroup>
-        <Reference Include="Unfucked">
-            <HintPath>..\..\Unfucked\Unfucked\bin\Debug\net8.0\Unfucked.dll</HintPath>
-        </Reference>
-        <Reference Include="Unfucked.HTTP">
-            <HintPath>..\..\Unfucked\HTTP\bin\Debug\net8.0\Unfucked.HTTP.dll</HintPath>
-        </Reference>
     </ItemGroup>
 
     <ItemGroup>

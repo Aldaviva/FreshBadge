@@ -8,11 +8,12 @@ namespace FreshBadge.Data;
 public class PublicCheckStatusReport {
 
     public uint checkId { get; init; }
-    public uint durationSecondsAvailable { get; init; }
     public uint durationSecondsTotalDowntime { get; init; }
     public uint outagesCountTotal { get; init; }
+    public uint durationSecondsPerformanceGood { get; init; }
+    public uint durationSecondsPerformanceDegraded { get; init; }
 
     [JsonIgnore]
-    public double uptimePercentage => (double) durationSecondsAvailable / (durationSecondsAvailable + durationSecondsTotalDowntime);
+    public double uptimePercentage => 1 - (double) durationSecondsTotalDowntime / (durationSecondsPerformanceGood + durationSecondsPerformanceDegraded);
 
 }

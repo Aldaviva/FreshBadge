@@ -4,15 +4,35 @@
     "net8.0": {
       "NodaTime": {
         "type": "Direct",
-        "requested": "[3.2.1, )",
-        "resolved": "3.2.1",
-        "contentHash": "D1aHhUfPQUxU2nfDCVuSLahpp0xCYZTmj/KNH3mSK/tStJYcx9HO9aJ0qbOP3hzjGPV/DXOqY2AHe27Nt4xs4g=="
+        "requested": "[3.2.2, )",
+        "resolved": "3.2.2",
+        "contentHash": "dmju5W0UYC3QP/UJM0juKAZkH0HSDMp0gH91A0+mT9M0kgyM2Jm67hUZPl/WRQLq8Lijjqmdk8kyAViWFWM7dA=="
+      },
+      "Unfucked.HTTP": {
+        "type": "Direct",
+        "requested": "[0.0.0-beta10, )",
+        "resolved": "0.0.0-beta10",
+        "contentHash": "1bzvG6LtB4MwZH6IN0i6fEb89I7wXczEXTVqe0jX9QB9kV4pr5JzY4JlgrBC3miM0kse26Ssat6ndgQG2zf9mg==",
+        "dependencies": {
+          "System.Text.Json": "8.0.5",
+          "Unfucked": "0.0.0-beta9"
+        }
       },
       "UnionTypes": {
         "type": "Direct",
         "requested": "[1.1.0, )",
         "resolved": "1.1.0",
         "contentHash": "9OEQYxKvKfGAKKRZ6BtuOPE5cD/QKHXmmUY+jyk/i3mUbGpLOW6HBkKLa1tS+Ut3hc3QYzchAlSNWVmGYni+wg=="
+      },
+      "System.Text.Json": {
+        "type": "Transitive",
+        "resolved": "8.0.5",
+        "contentHash": "0f1B50Ss7rqxXiaBJyzUu9bWFOO2/zSlifZ/UNMdiIpDYe4cY4LQQicP4nirK1OS31I43rn062UIJ1Q9bpmHpg=="
+      },
+      "Unfucked": {
+        "type": "Transitive",
+        "resolved": "0.0.0-beta9",
+        "contentHash": "N/6wMq1xv+p/n+D1myMOJ8xhXp90qGdGiPMXFjUyz1EsE33v/X2R3ForcPZFldtYf1Q+vCte3AtYFg7qwjrlvA=="
       }
     },
     "net8.0/linux-arm": {},

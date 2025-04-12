@@ -19,16 +19,19 @@ Duration    defaultDuration = maximumDuration;
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 builder.Services
+    .AddCors()
     .AddSingleton<FreshpingClient, FreshpingClientImpl>()
     .ConfigureHttpJsonOptions(options => {
         options.SerializerOptions.Converters.Add(new JsonStringEnumConverter(JsonNamingPolicy.KebabCaseLower));
         options.SerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
     })
-    .AddSingleton(_ => new HttpClient(new UnfuckedHttpHandler(new SocketsHttpHandler { PooledConnectionLifetime = TimeSpan.FromHours(1), MaxConnectionsPerServer = 16 }))
+    .AddSingleton(_ => new HttpClient(new UnfuckedHttpHandler(new SocketsHttpHandler { PooledConnectionLifetime = TimeSpan.FromHours(1) }))
             { Timeout = TimeSpan.FromSeconds(30) }
         .Property(PropertyKey.JsonSerializerOptions, new JsonSerializerOptions(JsonSerializerDefaults.Web) { PropertyNamingPolicy = JsonNamingPolicy.SnakeCaseLower }));
 
 await using WebApplication webApp = builder.Build();
+
+webApp.UseCors();
 
 webApp.MapGet("/{checkId:long}", async ([FromRoute] long checkId,
                                         [FromQuery] string? period,
@@ -37,12 +40,7 @@ webApp.MapGet("/{checkId:long}", async ([FromRoute] long checkId,
                                         [FromServices] FreshpingClient client) => {
     try {
         precision ??= 4; // 1/90/24/60*100 = 0.0007716 (all increments affect 4 digits after the decimal point)
-        Duration reportDuration = period is not null && PeriodPattern.NormalizingIso.Parse(period) is { Success: true, Value: var p } && p.ToDuration() is var d
-            ? d < minimumDuration ? minimumDuration
-            : d > maximumDuration ? maximumDuration : d
-            : defaultDuration;
-
-        CheckStatus status = await client.fetchCheckStatus(checkId, reportDuration);
+        CheckStatus status = await fetchCheckStatus(checkId, period);
 
         try {
             CultureInfo.CurrentCulture = CultureInfo.CurrentUICulture = locale != null ? CultureInfo.GetCultureInfo(locale) : defaultCulture;
@@ -70,4 +68,15 @@ webApp.MapGet("/{checkId:long}", async ([FromRoute] long checkId,
     }
 });
 
+webApp.MapGet("/{checkId:long}.json", async (long checkId, string? period) => await fetchCheckStatus(checkId, period));
+
 await webApp.RunAsync();
+
+async Task<CheckStatus> fetchCheckStatus(long checkId, string? period) {
+    Duration reportDuration = period is not null && PeriodPattern.NormalizingIso.Parse(period) is { Success: true, Value: var p } && p.ToDuration() is var d
+        ? d < minimumDuration ? minimumDuration
+        : d > maximumDuration ? maximumDuration : d
+        : defaultDuration;
+
+    return await webApp.Services.GetRequiredService<FreshpingClient>().fetchCheckStatus(checkId, reportDuration);
+}

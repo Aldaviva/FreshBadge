@@ -34,12 +34,10 @@ public class ShieldsBadgeResponse {
         color           = serializeColor(messageColor);
         this.labelColor = serializeColor(labelColor);
 
-        static string? serializeColor(BadgeColor? color) => color?.ValueIndex switch {
-            Union3Index.Value1 => color.Value.Value1.toText(),
-            Union3Index.Value2 => color.Value.Value2.toRgbHexColor(),
-            Union3Index.Value3 => color.Value.Value3.EmptyToNull(),
-            null               => null
-        };
+        static string? serializeColor(BadgeColor? color) => color?.Switch(
+            wellKnownColor => wellKnownColor.toText(),
+            color => color.toRgbHexColor(),
+            cssColor => cssColor.EmptyToNull());
 
         switch (logo) {
             case { logoXml: { } xml }:

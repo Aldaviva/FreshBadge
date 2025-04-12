@@ -11,11 +11,13 @@ public enum ShieldColor {
     BLUE,
     GREY,
     LIGHT_GREY,
+
+    // aliases
     CRITICAL,
     IMPORTANT,
     SUCCESS,
     INFORMATIONAL,
-    INACTIVE,
+    INACTIVE
 
 }
 
