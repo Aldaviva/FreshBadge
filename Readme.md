@@ -88,7 +88,7 @@ https://img.shields.io/endpoint?url=https%3A%2F%2Fwest.aldaviva.com%2Ffreshbadge
 
 #### Link to Status Page in Markdown
 ```markdown
-[![Uptime for the past 90 days](https://img.shields.io/endpoint?url=https%3A%2F%2Fwest.aldaviva.com%2Ffreshbadge%2F304333)](https://statuspage.freshping.io/61473-Aldaviva)
+[![Uptime for the past 90 days](https://img.shields.io/endpoint?url=https%3A%2F%2Fwest.aldaviva.com%2Ffreshbadge%2F304333)](https://statuspage.freshping.io/61473-Aldaviva/check/304333?timefilter=2160)
 ```
 [![Uptime for the past 90 days](https://img.shields.io/endpoint?url=https%3A%2F%2Fwest.aldaviva.com%2Ffreshbadge%2F304333)](https://statuspage.freshping.io/61473-Aldaviva/check/304333?timefilter=2160)
 
